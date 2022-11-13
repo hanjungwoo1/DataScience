@@ -18,15 +18,9 @@ def find_jsons(root):
 
     return dirpath, file_list
 
-root_path, train_list = find_jsons("../data/OCR/train")
-root_path, valid_list = find_jsons("../data/OCR/valid")
-root_path, test_list = find_jsons("../data/OCR/test")
-
-print(root_path)
 
 def make_annotation_json(path:str, file_list:list, train_img_ids:dict):
 
-    count = 0
     for file in file_list:
         file_path = path + "/" + file
         try:
@@ -39,15 +33,20 @@ def make_annotation_json(path:str, file_list:list, train_img_ids:dict):
         img_names = file[:-5] + ".jpg"
 
         train_img_ids[img_names] = json_data["annotations"]
-        count += 1
 
-        if count == 5:
-            break
-
+root_path, train_list = find_jsons("../data/OCR/train")
 make_annotation_json(root_path, train_list, train_img_ids)
+
+root_path, valid_list = find_jsons("../data/OCR/valid")
 make_annotation_json(root_path, valid_list, validation_img_ids)
+
+root_path, test_list = find_jsons("../data/OCR/test")
 make_annotation_json(root_path, test_list, test_img_ids)
 
+print(root_path)
+print(len(train_list))
+print(len(valid_list))
+print(len(test_list))
 
 with open('../data/OCR/train_annotation.json', 'w') as file:
     json.dump(train_img_ids, file)
