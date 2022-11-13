@@ -63,6 +63,7 @@ class JsonDataset(Dataset):
         except IOError:
             print(f'Corrupted image for {index}')
 
+        print(json_data)
         annotation = [ a for a in json_data["annotations"]]
         return annotation
 
@@ -92,7 +93,8 @@ print(len(train_imgs), len(valid_test_img), len(train_labels), len(valid_test_la
 val_imgs, test_imgs, val_labels, test_labels = train_test_split(valid_test_img, valid_test_labels, test_size=0.5, random_state=940107)
 print(len(val_imgs), len(test_imgs), len(val_labels), len(test_labels))
 
-
+print(labels.__getitem__(0))
+print(labels.json_list[0])
 
 def move_files(img_list, label_list, destination_path):
 
