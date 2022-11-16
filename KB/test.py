@@ -255,6 +255,7 @@ def test(opt):
             log.close()
 
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--eval_data', default="../data/OCR/result/test", help='path to evaluation dataset')
