@@ -89,6 +89,9 @@ def validation(model, criterion, evaluation_loader, converter, opt):
     infer_time = 0
     valid_loss_avg = Averager()
 
+    log_file = open(f'./result/{opt.exp_name}/log_evaluation_answer.txt', 'w', encoding="UTF-8")
+
+
     print("validation")
     for i, (image_tensors, labels) in enumerate(evaluation_loader):
         batch_size = image_tensors.size(0)
@@ -160,6 +163,9 @@ def validation(model, criterion, evaluation_loader, converter, opt):
 
             if pred == gt:
                 n_correct += 1
+            else:
+                log_file.write('{0} * {1} '.format(gt, pred))
+                log_file.write("\n")
 
             '''
             (old version) ICDAR2017 DOST Normalized Edit Distance https://rrc.cvc.uab.es/?ch=7&com=tasks
@@ -185,6 +191,12 @@ def validation(model, criterion, evaluation_loader, converter, opt):
                 confidence_score = 0  # for empty pred case, when prune after "end of sentence" token ([s])
             confidence_score_list.append(confidence_score)
             # print(pred, gt, pred==gt, confidence_score)
+
+    print("맞춘 갯 수 : ", n_correct)
+    print("전채 갯수 : ", length_of_data)
+    print("틀린 갯수 : ", length_of_data-n_correct)
+
+    log_file.close()
 
     accuracy = n_correct / float(length_of_data) * 100
     norm_ED = norm_ED / float(length_of_data)  # ICDAR2019 Normalized Edit Distance
@@ -241,15 +253,8 @@ def test(opt):
                 collate_fn=AlignCollate_evaluation, pin_memory=True)
             _, accuracy_by_best_model, a, b, c, d, e, f = validation(
                 model, criterion, evaluation_loader, converter, opt)
-
             # return valid_loss_avg.val(), accuracy, norm_ED, preds_str, confidence_score_list, labels, infer_time, length_of_data
             log.write(eval_data_log)
-            log.write(str(a))
-            log.write(str(b))
-            log.write(str(c))
-            log.write(str(d))
-            log.write(str(e))
-            log.write(str(f))
             print(f'{accuracy_by_best_model:0.3f}')
             log.write(f'{accuracy_by_best_model:0.3f}\n')
             log.close()
