@@ -20,3 +20,6 @@ sub-directory:	/.	 num samples: 142206
 dataset_root:    ../data/OCR/result/test	 dataset: /
 sub-directory:	/.	 num samples: 142206
 97.999
+dataset_root:    ../data/OCR/result/test	 dataset: /
+sub-directory:	/.	 num samples: 142206
+97.999
