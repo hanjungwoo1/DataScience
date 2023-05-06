@@ -11,7 +11,6 @@
 # pipe(prompt).images[0]
 
 import openai
-openai.api_key = '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'
 
 response = openai.Image.create(
   prompt="a white siamese cat",
